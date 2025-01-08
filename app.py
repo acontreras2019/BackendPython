@@ -59,8 +59,8 @@ def get_filtro():
                 { "id": "2020_2023", "name": "2020-2023", "selected": 0}
             ]
         }
-        
     ]
+    print(filtro)
     return jsonify(filtro)
 
 # Ruta para procesar la búsqueda
@@ -73,7 +73,8 @@ def buscar_resultados():
     time = request.args.get('time', '').split(',') if request.args.get('time') else []
 
        # Procesar la consulta usando NLTK
-    stop_words = set(stopwords.words('spanish'))  # Puedes ajustar el idioma aquí
+    # stop_words = set(stopwords.words('spanish'))  # Puedes ajustar el idioma aquí
+    stop_words = set(stopwords.words('english'))  # You can adjust the language here
     word_tokens = word_tokenize(query.lower())  # Tokenizamos la consulta y la pasamos a minúsculas
     filtered_query = [word for word in word_tokens if word.isalnum() and word not in stop_words]  # Eliminamos stopwords y caracteres no alfanuméricos
 
@@ -100,12 +101,12 @@ def buscar_resultados():
 
     # Convertir a JSON
     dataFiltered = filtered_data.to_dict(orient='records')
-    print("Datos filtrados:") 
-    print(filtered_data)
+    # cantidad de registros filtrados
+    longitudRec = len(dataFiltered) 
+    # print(dataFiltered)
 
     # analizar datos filtrados
     analyzed_data = analyze_data(dataFiltered)
-
    # print(analyzed_data)
    
     resultados = {
@@ -114,6 +115,7 @@ def buscar_resultados():
             "fuente": fuente,  # fuente
             "socialNetwork": socialNetwork,  # red social
             "time": time,  # ANIOS
+            "countRegisterFiltered": longitudRec
           
         },
         "results":  [ analyzed_data  ] # Json con los datos analizados
