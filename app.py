@@ -1,21 +1,17 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS  # Importa la extensión
-from transformers import pipeline
 import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
-from nltk.sentiment import SentimentIntensityAnalyzer
+
 
 from data_reader import read_csv_files, filter_data  # Importa el módulo creado
 from analyze_data import analyze_data  # Importa la nueva funcionalidad desde un archivo externo
 
 
-
-
 # Descargar los recursos de NLTK que necesitarás
 nltk.download('punkt')  
 nltk.download('stopwords')
-nltk.download('vader_lexicon')
 
 app = Flask(__name__)
 CORS(app)  # Aplica CORS globalmente
@@ -41,7 +37,7 @@ def get_filtro():
             "id": "1",
             "type": "socialNetwork",
             "name": "SOCIAL NETWORK",
-            "icon": "📄", 
+            "icon": "🌐", 
             "options": [
                 { "id": "facebook", "name": "Facebook", "selected": 0 },
                 { "id": "twitter", "name": "X o Twitter", "selected": 0 },
@@ -52,7 +48,7 @@ def get_filtro():
             "id": "2",
             "type": "time",
             "name": "TIME",
-             "icon": "🌐",  
+             "icon": "🗓️",  
             "options": [
                 { "id": "2010_2014", "name": "2010-2014", "selected": 0},
                 { "id": "2015_2019", "name": "2015-2019", "selected": 0},
@@ -125,8 +121,6 @@ def buscar_resultados():
     
 
     return jsonify(resultados)
-
-
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
